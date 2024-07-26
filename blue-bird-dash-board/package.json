@@ -1,0 +1,26 @@
+{
+  "name": "blue-bird",
+  "version": "1.0.0",
+  "description": "사회복지시설 파랑새둥지 대시보드",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YeonSeong-Lee/blue-bird.git"
+  },
+  "keywords": [
+    "dashboard"
+  ],
+  "author": "YeonSeong-Lee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YeonSeong-Lee/blue-bird/issues"
+  },
+  "homepage": "https://github.com/YeonSeong-Lee/blue-bird#readme",
+  "devDependencies": {
+    "electron": "^31.3.0"
+  }
+}

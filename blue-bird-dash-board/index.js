@@ -32,20 +32,24 @@ const createWindow = () => {
         const $ = cheerio.load(html);
         const today = new Date().getDay() - 1; // 0 (일요일) ~ 6 (토요일)
         const all_menu_items = [];
-        let today_launch_menu = '';
+        let today_launch_menu = {
+          "아침": "",
+          "점심": "",
+          "저녁": ""
+        };
     
         $('tr.time').each((rowIndex, rowElement) => {
           const mealTime = $(rowElement).find('th').text().trim(); // 식사 시간 (아침, 점심, 저녁)
           const menuCells = $(rowElement).find('td.hour.week'); // 요일별 메뉴 셀
       
-          menuCells.each((dayIndex, cellElement) => {
+            menuCells.each((dayIndex, cellElement) => {
             if (cellElement) { // Check if cellElement is not null
               const cellText = $(cellElement).text().trim();
               if (dayIndex === today) {
-                today_launch_menu += `${mealTime}: ${cellText}\n`;
+              today_launch_menu[mealTime] += `${cellText}`;
               }
             }
-          });
+            });
         });
     
         return today_launch_menu || 'No menu available for today.';

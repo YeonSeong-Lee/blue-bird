@@ -23,5 +23,8 @@
   "homepage": "https://github.com/YeonSeong-Lee/blue-bird#readme",
   "devDependencies": {
     "electron": "^31.3.0"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12"
   }
 }

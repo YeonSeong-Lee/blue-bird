@@ -1,13 +1,16 @@
 // main.js
 
 // Modules to control application life and create native browser window
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import cheerio from 'cheerio';
 
 // Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const url = 'http://psnest.kr/sub/sub05_05.php';
+
 
 const createWindow = () => {
   // Create the browser window.
@@ -21,7 +24,39 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
-
+  ipcMain.handle('getLunchMenu', async() => {
+    const getLunchMenu = async() => {
+      try {
+        const response = await fetch(url);
+        const html = await response.text();
+        const $ = cheerio.load(html);
+        const today = new Date().getDay() - 1; // 0 (일요일) ~ 6 (토요일)
+        const all_menu_items = [];
+        let today_launch_menu = '';
+    
+        $('tr.time').each((rowIndex, rowElement) => {
+          const mealTime = $(rowElement).find('th').text().trim(); // 식사 시간 (아침, 점심, 저녁)
+          const menuCells = $(rowElement).find('td.hour.week'); // 요일별 메뉴 셀
+      
+          menuCells.each((dayIndex, cellElement) => {
+            if (cellElement) { // Check if cellElement is not null
+              const cellText = $(cellElement).text().trim();
+              if (dayIndex === today) {
+                today_launch_menu += `${mealTime}: ${cellText}\n`;
+              }
+            }
+          });
+        });
+    
+        return today_launch_menu || 'No menu available for today.';
+      } catch (error) {
+        console.error('Error fetching lunch menu:', error);
+        throw error;
+      }
+    }
+    const today_menu = await getLunchMenu();
+    return today_menu;
+  });
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }

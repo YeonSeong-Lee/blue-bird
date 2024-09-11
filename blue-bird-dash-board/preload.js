@@ -10,4 +10,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
 contextBridge.exposeInMainWorld('versions', {
     ping: () => ipcRenderer.invoke('getLunchMenu'),
+    resize: (w, h) => ipcRenderer.invoke('resizeWindow', w, h)
 });

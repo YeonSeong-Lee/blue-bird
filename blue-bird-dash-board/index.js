@@ -1,22 +1,14 @@
-// main.js
+const { app, BrowserWindow, ipcMain } = require('electron');
+const path = require('node:path')
+const cheerio = require('cheerio');
 
-// Modules to control application life and create native browser window
-import { app, BrowserWindow, ipcMain } from 'electron';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import cheerio from 'cheerio';
-
-// Get the directory name of the current module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const url = 'http://psnest.kr/sub/sub05_05.php';
-
 
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 500,
-    height: 400,
+    width: 1050,
+    height: 500,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
@@ -24,6 +16,14 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
+
+  ipcMain.handle('resizeWindow', (e, w, h) => {
+    const resizeWindow = (w, h) => {
+      // Set the desired table height
+      mainWindow.setSize(w, h);
+    }
+    resizeWindow(w, h);
+  });
   ipcMain.handle('getLunchMenu', async() => {
     const getLunchMenu = async() => {
       try {
@@ -31,8 +31,14 @@ const createWindow = () => {
         const html = await response.text();
         const $ = cheerio.load(html);
         const today = new Date().getDay() - 1; // 0 (일요일) ~ 6 (토요일)
-        const all_menu_items = [];
-        let today_launch_menu = {
+        const all_menu_items = {
+          "월": [],
+          "화": [],
+          "수": [],
+          "목": [],
+          "금": [],
+        }
+        let today_menu = {
           "아침": "",
           "점심": "",
           "저녁": ""
@@ -45,14 +51,26 @@ const createWindow = () => {
             menuCells.each((dayIndex, cellElement) => {
             if (cellElement) { // Check if cellElement is not null
               const cellText = $(cellElement).text().trim();
-              if (dayIndex === today) {
-              today_launch_menu[mealTime] += `${cellText}`;
+              if (dayIndex === 1 && mealTime == "점심") {
+              all_menu_items["월"].push(`${cellText}`);
+              }
+              if (dayIndex === 2 && mealTime == "점심") {
+              all_menu_items["화"].push(`${cellText}`);
+              }
+              if (dayIndex === 3 && mealTime == "점심") {
+              all_menu_items["수"].push(`${cellText}`);
+              }
+              if (dayIndex === 4 && mealTime == "점심") {
+              all_menu_items["목"].push(`${cellText}`);
+              }
+              if (dayIndex === 5 && mealTime == "점심") {
+              all_menu_items["금"].push(`${cellText}`);
               }
             }
             });
         });
     
-        return today_launch_menu || 'No menu available for today.';
+        return all_menu_items || 'No menu available for today.';
       } catch (error) {
         console.error('Error fetching lunch menu:', error);
         throw error;

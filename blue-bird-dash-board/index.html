@@ -5,10 +5,25 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>파랑새둥지 오늘의 점심</title>
+    <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <h1>오늘의 점심 메뉴</h1>
-    <p id="menu">
+    <table class="table-fill">
+      <tr>
+        <th class="text-center">월요일</th>
+        <th class="text-center">화요일</th>
+        <th class="text-center">수요일</th>
+        <th class="text-center">목요일</th>
+        <th class="text-center">금요일</th>
+      </tr>
+      <tr>
+        <td id="mon-lunch"></td>
+        <td id="tue-lunch"></td>
+        <td id="wed-lunch"></td>
+        <td id="thu-lunch"></td>
+        <td id="fri-lunch"></td>
+      </tr>
+    </table>
   </body>
   <script src="./renderer.js">
   </script>

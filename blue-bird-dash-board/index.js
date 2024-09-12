@@ -38,11 +38,6 @@ const createWindow = () => {
           "목": [],
           "금": [],
         }
-        let today_menu = {
-          "아침": "",
-          "점심": "",
-          "저녁": ""
-        };
     
         $('tr.time').each((rowIndex, rowElement) => {
           const mealTime = $(rowElement).find('th').text().trim(); // 식사 시간 (아침, 점심, 저녁)
@@ -50,20 +45,21 @@ const createWindow = () => {
       
             menuCells.each((dayIndex, cellElement) => {
             if (cellElement) { // Check if cellElement is not null
-              const cellText = $(cellElement).text().trim();
-              if (dayIndex === 1 && mealTime == "점심") {
+              let cellText = $(cellElement).text().trim();
+              cellText = cellText.replace(/&/g, '\n');
+              if (dayIndex === 0 && mealTime == "점심") {
               all_menu_items["월"].push(`${cellText}`);
               }
-              if (dayIndex === 2 && mealTime == "점심") {
+              if (dayIndex === 1 && mealTime == "점심") {
               all_menu_items["화"].push(`${cellText}`);
               }
-              if (dayIndex === 3 && mealTime == "점심") {
+              if (dayIndex === 2 && mealTime == "점심") {
               all_menu_items["수"].push(`${cellText}`);
               }
-              if (dayIndex === 4 && mealTime == "점심") {
+              if (dayIndex === 3 && mealTime == "점심") {
               all_menu_items["목"].push(`${cellText}`);
               }
-              if (dayIndex === 5 && mealTime == "점심") {
+              if (dayIndex === 4 && mealTime == "점심") {
               all_menu_items["금"].push(`${cellText}`);
               }
             }

@@ -7,8 +7,8 @@ const url = 'http://psnest.kr/sub/sub05_05.php';
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 500,
-    height: 400,
+    width: 1050,
+    height: 500,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }

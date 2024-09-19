@@ -10,7 +10,7 @@ const fetch_xlsx = async () => {
         }
         date.push(year + '년 ' + raw_data[1][i].value + ' ' + raw_data[2][i].value + '일')
     }
-    const parsed_data = {}
+    const parsed_data_by_name = {}
     for (let i = 4; i < raw_data.length; i++) {
         const row = []
         const name = raw_data[i][1]?.value
@@ -24,9 +24,9 @@ const fetch_xlsx = async () => {
             }
             row.push(temp)
         }
-        parsed_data[name] = row
+        parsed_data_by_name[name] = row
     }
-    console.log(parsed_data)
+    console.log(parsed_data_by_name)
 }
 
 fetch_xlsx();

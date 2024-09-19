@@ -23,20 +23,20 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   ipcMain.handle('fetch_xlsx', async () => {
-    const sheetData = [];
+    const sheet_data = [];
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.readFile('24년 근무표.xlsx');
     const worksheet = workbook.worksheets[workbook.worksheets.length - 1];
-    sheetData.push(worksheet.name);
+    sheet_data.push(worksheet.name);
     const options = { includeEmpty: true };
     
     worksheet.eachRow(options, (row, rowNum) => {
-      sheetData[rowNum] = []
+      sheet_data[rowNum] = []
       row.eachCell(options, (cell, cellNum) => {
-        sheetData[rowNum][cellNum] = { value:cell.value, style:cell.style }
+        sheet_data[rowNum][cellNum] = { value:cell.value, style:cell.style }
       })
     })
-    return sheetData;
+    return sheet_data;
   });
   // Open the DevTools.
   mainWindow.webContents.openDevTools();

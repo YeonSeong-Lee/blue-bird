@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
+const ExcelJS = require('exceljs');
 const path = require('node:path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -22,12 +23,19 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   ipcMain.handle('fetch_xlsx', async () => {
-    const XLSX = require('xlsx');
-    const workbook = XLSX.readFile('24년 근무표.xlsx', { type: 'file', raw: true });
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-    const jsonData = XLSX.utils.sheet_to_json(worksheet);
-    return jsonData;
+    const sheetData = [];
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile('24년 근무표.xlsx');
+    const worksheet = workbook.worksheets[workbook.worksheets.length - 1];
+    const options = { includeEmpty: true };
+    
+    worksheet.eachRow(options, (row, rowNum) => {
+      sheetData[rowNum] = []
+      row.eachCell(options, (cell, cellNum) => {
+        sheetData[rowNum][cellNum] = { value:cell.value, style:cell.style }
+      })
+    })
+    return sheetData;
   });
   // Open the DevTools.
   mainWindow.webContents.openDevTools();

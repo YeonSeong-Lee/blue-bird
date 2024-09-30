@@ -32,6 +32,11 @@ class WorkShift extends HTMLElement {
                 text-align: center;
             }
 
+            #shift-form {
+                display: flex;
+                justify-content: space-between;
+            }
+
             table thead tr {
                 background-color: #73a7d9;
                 color: #ffffff;
@@ -71,9 +76,9 @@ class WorkShift extends HTMLElement {
                     <th colspan="2" id="header">${today} 근무표</th>
                     <tr>
                         <td colspan="2">
-                        <form id="shift-form">
-                            <input type="date" id="date-input" />
-                            <input type="submit" id="load-shift" value="근무표 불러오기" />
+                        <form id="shift-form" >
+                            <input type="date" id="date-input" value=${new Date().toISOString().slice(0, 10)} />
+                            <input type="reset" id="reset-shift" value="초기화" />
                         </form>
                         </td>
                     </tr>

@@ -7,7 +7,7 @@ const fetch_xlsx = async () => {
         if (raw_data[1][i].value === null || raw_data[2][i].value === null) {
             continue
         }
-        date.push(year + '년 ' + raw_data[1][i].value + ' ' + raw_data[2][i].value + '일')
+        date.push(year + '년 ' + raw_data[1][i].value.trim() + ' ' + raw_data[2][i].value + '일')
     }
     const parsed_data_by_name = {}
     const START_NAME_ROW = 4
@@ -27,7 +27,8 @@ const fetch_xlsx = async () => {
         }
         parsed_data_by_name[name] = row
     }
-    console.log("parsed_data_by_name", parsed_data_by_name)
+
+    localStorage.setItem('parsed_data_by_name', JSON.stringify(parsed_data_by_name))
 
     const parsed_data_by_date = {}
     for (let i = 2; i < raw_data[1].length; i++) {
@@ -44,7 +45,7 @@ const fetch_xlsx = async () => {
         }
         parsed_data_by_date[date[i - 2]] = row
     }
-    console.log("parsed_data_by_date", parsed_data_by_date)
+    localStorage.setItem('parsed_data_by_date', JSON.stringify(parsed_data_by_date))
 }
 
 fetch_xlsx();

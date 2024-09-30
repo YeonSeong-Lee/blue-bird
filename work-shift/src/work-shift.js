@@ -72,10 +72,6 @@ class WorkShift extends HTMLElement {
                     <tr>
                         <td colspan="2">
                         <form id="shift-form">
-                            <input type="checkbox">사무국</input>
-                            <input type="checkbox">건강증진과</input>
-                            <input type="checkbox">생활복지과</input>
-                            <input type="checkbox">재활사업과</input>
                             <input type="date" id="date-input" />
                             <input type="submit" id="load-shift" value="근무표 불러오기" />
                         </form>

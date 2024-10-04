@@ -4,7 +4,6 @@ class WorkShift extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-
         const style = document.createElement('style');
         style.textContent = css;
         this.shadowRoot.appendChild(style);

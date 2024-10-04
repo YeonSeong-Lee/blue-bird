@@ -1,3 +1,5 @@
+import css from './work-shift-css.js';
+
 class WorkShift extends HTMLElement {
     constructor() {
         super();
@@ -17,56 +19,6 @@ class WorkShift extends HTMLElement {
         const evening_worker = parsed_data_by_date[today_key].filter(worker => worker.value.includes('E'));
         const night_worker = parsed_data_by_date[today_key].filter(worker => worker.value.includes('N'));
         const off_worker = parsed_data_by_date[today_key].filter(worker => worker.value.includes('off'));
-        const css = `table {
-                width: 100%;
-                border-collapse: collapse;
-                margin: 20px 0;
-                font-size: 18px;
-                text-align: left;
-            }
-            
-            #header {
-                background-color: #73a7d9;
-                color: #ffffff;
-                font-size: 24px;
-                font-weight: bold;
-                text-align: center;
-            }
-
-            #shift-form {
-                display: flex;
-                justify-content: space-between;
-            }
-
-            table thead tr {
-                background-color: #73a7d9;
-                color: #ffffff;
-                text-align: left;
-                font-weight: bold;
-            }
-
-            table th, table td {
-                padding: 12px 15px;
-                border: 1px solid #dddddd;
-                min-width: 42px;
-            }
-
-            table tbody tr {
-                border-bottom: 1px solid #dddddd;
-            }
-
-            table tbody tr:nth-of-type(even) {
-                background-color: #f3f3f3;
-            }
-
-            table tbody tr:last-of-type {
-                border-bottom: 2px solid #73a7d9;
-            }
-
-            table tbody tr:hover {
-                background-color: #f1f1f1;
-            }
-            `;
 
         // TODO: 사용자의 선택에 따라 근무자를 출력하도록 수정
         this.shadowRoot.innerHTML = `
@@ -78,8 +30,8 @@ class WorkShift extends HTMLElement {
                     <tr>
                         <td colspan="2">
                         <form id="shift-form" >
-                            <input type="date" id="date-input" value=${new Date().toISOString().slice(0, 10)} />
-                            <input type="reset" id="reset-shift" value="초기화" />
+                            <input type="date" id="date-input" value=${new Date().toISOString().slice(0, 10)}  onchange="alert(this.value)"/>
+                            <input type="reset" id="reset-shift" value="오늘 근무" />
                         </form>
                         </td>
                     </tr>

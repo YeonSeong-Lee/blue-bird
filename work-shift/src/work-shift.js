@@ -1,5 +1,10 @@
 import css from './work-shift-css.js';
 
+// TODO: get data from localStorage,sync with the latest data
+// TODO: should be fetch after render.js is loaded
+
+// TODO: 날짜를 입력받아서 해당 날짜의 근무자를 출력하도록 수정
+
 class WorkShift extends HTMLElement {
     constructor() {
         super();
@@ -26,13 +31,12 @@ class WorkShift extends HTMLElement {
         const parsed_data_by_date = JSON.parse(localStorage.getItem('parsed_data_by_date'));
         const today_key = new Date(date).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
         const day_worker = parsed_data_by_date[today_key]?.filter(worker => worker.value.includes('D'));
-        const yellow_workers = parsed_data_by_date[today_key]?.filter(worker => worker["노D"] === true);
+        const yellow_workers = parsed_data_by_date[today_key]?.filter(worker => worker["노D"] === true && (worker.value.includes('D') || worker.value.includes('E')));
         const evening_worker = parsed_data_by_date[today_key]?.filter(worker => worker.value.includes('E'));
         const night_worker = parsed_data_by_date[today_key]?.filter(worker => worker.value.includes('N'));
-        const off_worker = parsed_data_by_date[today_key]?.filter(worker => worker.value.includes('off'));
+        const off_worker = parsed_data_by_date[today_key]?.filter(worker => !(worker.value.includes('D') || worker.value.includes('E') || worker.value.includes('N')));
 
         this.shadowRoot.querySelector('.container').innerHTML = `
-            <style>${css}</style>
             <div class="work-shift">
                 <table>
                 <tr>
@@ -66,7 +70,7 @@ class WorkShift extends HTMLElement {
                     <td>${night_worker.map((e) => e.name).join(', ')}</td>
                 </tr>
                 <tr>
-                    <td>Off</td>
+                    <td>OFF</td>
                     <td>${off_worker.map((e) => e.name).join(', ')}</td>
                 </tr>
                 </table>

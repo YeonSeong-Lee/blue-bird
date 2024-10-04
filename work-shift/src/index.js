@@ -15,6 +15,7 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+    autoHideMenuBar: true,
     nodeIntegration: true, // 추가
     contextIsolation: false // 추가
   });

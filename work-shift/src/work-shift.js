@@ -12,10 +12,11 @@ class WorkShift extends HTMLElement {
         const parsed_data_by_name = JSON.parse(localStorage.getItem('parsed_data_by_name'));
         const parsed_data_by_date = JSON.parse(localStorage.getItem('parsed_data_by_date'));
         const today_key = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
-        const day_worker = parsed_data_by_date[today_key].filter(worker => worker.value.includes('D'));
+        const day_worker = parsed_data_by_date[today_key].filter(worker => worker.value.includes('D') && !worker["노D"]);
+        const yellow_day_workers = parsed_data_by_date[today_key].filter(worker => worker.value.includes('D') && worker["노D"] === true);
         const evening_worker = parsed_data_by_date[today_key].filter(worker => worker.value.includes('E'));
         const night_worker = parsed_data_by_date[today_key].filter(worker => worker.value.includes('N'));
-        const yellow_day_workers = parsed_data_by_date[today_key].filter(worker => worker["노D"] === true);
+        const off_worker = parsed_data_by_date[today_key].filter(worker => worker.value.includes('off'));
         const css = `table {
                 width: 100%;
                 border-collapse: collapse;
@@ -64,8 +65,8 @@ class WorkShift extends HTMLElement {
 
             table tbody tr:hover {
                 background-color: #f1f1f1;
-            }`;
-
+            }
+            `;
 
         // TODO: 사용자의 선택에 따라 근무자를 출력하도록 수정
         this.shadowRoot.innerHTML = `
@@ -101,6 +102,10 @@ class WorkShift extends HTMLElement {
                 <tr>
                     <td>N</td>
                     <td>${night_worker.map((e) => e.name)}</td>
+                </tr>
+                <tr>
+                    <td>off</td>
+                    <td>${off_worker.map((e) => e.name)}</td>
                 </tr>
                 </table>
             </div>

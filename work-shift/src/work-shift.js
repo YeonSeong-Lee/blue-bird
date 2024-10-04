@@ -22,7 +22,6 @@ class WorkShift extends HTMLElement {
 
     syncDate(event) {
         const selectedDate = event.target.value;
-        console.log(selectedDate);
         this.render(selectedDate);
     }
 
@@ -30,6 +29,35 @@ class WorkShift extends HTMLElement {
         const today = new Date(date).toLocaleDateString('kr', { month: '2-digit', day: "2-digit" });
         const parsed_data_by_date = JSON.parse(localStorage.getItem('parsed_data_by_date'));
         const today_key = new Date(date).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+        console.log(parsed_data_by_date[today_key]);
+        if (!parsed_data_by_date[today_key]) {
+            this.shadowRoot.querySelector('.container').innerHTML = `
+                <div class="work-shift">
+                <table>
+                <tr>
+                    <th colspan="2" id="header">${today} 근무표</th>
+                    <tr>
+                        <td colspan="2">
+                        <form id="shift-form">
+                            <input type="date" id="date-input" value=${date} />
+                            <input type="reset" id="reset-shift" value="오늘 근무" />
+                        </form>
+                        </td>
+                    </tr>
+                <tr>
+                    <tr>
+                        <td>
+                            ${today} 근무자를 불러오지 못했습니다. 엑셀 파일을 확인해주세요.
+                        </td>
+                    </tr>
+                </table>
+                </div>
+            `;
+            this.shadowRoot.querySelector('#date-input').addEventListener('change', (event) => {
+                this.syncDate(event);
+            });
+            return;
+        }
         const day_worker = parsed_data_by_date[today_key]?.filter(worker => worker.value.includes('D'));
         const yellow_workers = parsed_data_by_date[today_key]?.filter(worker => worker["노D"] === true && (worker.value.includes('D') || worker.value.includes('E')));
         const evening_worker = parsed_data_by_date[today_key]?.filter(worker => worker.value.includes('E'));

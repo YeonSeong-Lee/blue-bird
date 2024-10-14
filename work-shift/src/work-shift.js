@@ -11,6 +11,17 @@ class WorkShift extends HTMLElement {
         const container = document.createElement('div');
         container.classList.add('container');
         this.shadowRoot.appendChild(container);
+
+        // 대기화면 추가
+        const loadingScreen = document.createElement('div');
+        loadingScreen.id = 'loading-screen';
+        loadingScreen.textContent = '로딩 중...';
+        loadingScreen.style.display = 'flex';
+        loadingScreen.style.justifyContent = 'center';
+        loadingScreen.style.alignItems = 'center';
+        loadingScreen.style.height = '100%';
+        loadingScreen.style.fontSize = '24px';
+        container.appendChild(loadingScreen);
     }
 
     syncDate(event) {
@@ -23,6 +34,7 @@ class WorkShift extends HTMLElement {
         const parsed_data_by_date = JSON.parse(localStorage.getItem('parsed_data_by_date'));
         const today_key = new Date(date).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
         if (!parsed_data_by_date[today_key]) {
+            this.shadowRoot.querySelector('#loading-screen').style.display = 'none';
             this.shadowRoot.querySelector('.container').innerHTML = `
                 <div class="work-shift">
                 <table>

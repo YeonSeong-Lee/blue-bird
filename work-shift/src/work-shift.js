@@ -21,10 +21,7 @@ class WorkShift extends HTMLElement {
     render(date) {
         const today = new Date(date).toLocaleDateString('kr', { month: '2-digit', day: "2-digit" });
         const parsed_data_by_date = JSON.parse(localStorage.getItem('parsed_data_by_date'));
-        console.log(parsed_data_by_date);
         const today_key = new Date(date).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
-        console.log("today_key", today_key);
-        console.log(parsed_data_by_date[today_key]);
         if (!parsed_data_by_date[today_key]) {
             this.shadowRoot.querySelector('.container').innerHTML = `
                 <div class="work-shift">

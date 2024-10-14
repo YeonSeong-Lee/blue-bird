@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const ExcelJS = require('exceljs');
 const path = require('node:path');
+const chokidar = require('chokidar'); // Add chokidar
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -14,10 +15,10 @@ const createWindow = () => {
     height: 700,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: false, // Set to false for security
+      contextIsolation: true // Enable context isolation
     },
-    autoHideMenuBar: true,
-    nodeIntegration: true, // 추가
-    contextIsolation: false // 추가
+    autoHideMenuBar: true
   });
 
   // and load the index.html of the app.
@@ -39,8 +40,16 @@ const createWindow = () => {
     })
     return sheet_data;
   });
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+
+  // Watch for changes to the Excel file
+  const watcher = chokidar.watch('24년 근무표.xlsx', {
+    persistent: true
+  });
+
+  watcher.on('change', () => {
+    console.log('file-changed');
+    mainWindow.webContents.send('file-changed');
+  });
 };
 
 // This method will be called when Electron has finished

@@ -111,6 +111,11 @@ class WorkShift extends HTMLElement {
         this.shadowRoot.querySelector('#date-input').addEventListener('change', (event) => {
             this.syncDate(event);
         });
+        this.shadowRoot.querySelector('#reset-shift').addEventListener('click', () => {
+            const today = new Date().toISOString().slice(0, 10); // Get today's date in YYYY-MM-DD format
+            this.shadowRoot.querySelector('#date-input').value = today; // Set the date input to today's date
+            this.render(today);
+        });
     }
 }
 

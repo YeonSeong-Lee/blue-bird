@@ -2,7 +2,7 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('versions', {
-    fetch_xlsx: () => ipcRenderer.invoke('fetch_xlsx')
+contextBridge.exposeInMainWorld('electronAPI', {
+  fetch_xlsx: () => ipcRenderer.invoke('fetch_xlsx'),
+  on: (channel, callback) => ipcRenderer.on(channel, callback)
 });
-

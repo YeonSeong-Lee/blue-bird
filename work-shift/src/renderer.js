@@ -1,5 +1,5 @@
 const fetch_xlsx = async () => {
-    const raw_data = await window.versions.fetch_xlsx()
+    const raw_data = await window.electronAPI.fetch_xlsx()
     // TODO: validate raw_data and alert if it's invalid
     const year = '20' + raw_data[0].split('-')[0]
     const date = []
@@ -48,11 +48,19 @@ const fetch_xlsx = async () => {
     localStorage.setItem('parsed_data_by_date', JSON.stringify(parsed_data_by_date))
 }
 
-fetch_xlsx().then(() => {
-    const workShiftElement = document.querySelector('work-shift');
-    if (workShiftElement && typeof workShiftElement.render === 'function') {
-        workShiftElement.render(new Date().toISOString().slice(0, 10));
-    } else {
-        console.error('WorkShift element not found or render method not available');
-    }
+const fetchAndRenderData = () => {
+    fetch_xlsx().then(() => {
+        const workShiftElement = document.querySelector('work-shift');
+        if (workShiftElement) {
+            workShiftElement.render(new Date().toISOString().slice(0, 10));
+        }
+    });
+};
+
+// Initial fetch and render
+fetchAndRenderData();
+
+// Listen for file changes
+window.electronAPI.on('file-changed', () => {
+    fetchAndRenderData();
 });

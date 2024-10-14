@@ -33,8 +33,11 @@ class WorkShift extends HTMLElement {
         const today = new Date(date).toLocaleDateString('kr', { month: '2-digit', day: "2-digit" });
         const parsed_data_by_date = JSON.parse(localStorage.getItem('parsed_data_by_date'));
         const today_key = new Date(date).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+        const loadingScreen = this.shadowRoot.querySelector('#loading-screen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+        }
         if (!parsed_data_by_date[today_key]) {
-            this.shadowRoot.querySelector('#loading-screen').style.display = 'none';
             this.shadowRoot.querySelector('.container').innerHTML = `
                 <div class="work-shift">
                 <table>

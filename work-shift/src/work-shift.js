@@ -1,10 +1,5 @@
 import css from './work-shift-css.js';
 
-// TODO: get data from localStorage,sync with the latest data
-// TODO: should be fetch after render.js is loaded
-
-// TODO: 날짜를 입력받아서 해당 날짜의 근무자를 출력하도록 수정
-
 class WorkShift extends HTMLElement {
     constructor() {
         super();
@@ -16,8 +11,6 @@ class WorkShift extends HTMLElement {
         const container = document.createElement('div');
         container.classList.add('container');
         this.shadowRoot.appendChild(container);
-
-        this.render(new Date().toISOString().slice(0, 10));
     }
 
     syncDate(event) {
@@ -28,7 +21,9 @@ class WorkShift extends HTMLElement {
     render(date) {
         const today = new Date(date).toLocaleDateString('kr', { month: '2-digit', day: "2-digit" });
         const parsed_data_by_date = JSON.parse(localStorage.getItem('parsed_data_by_date'));
+        console.log(parsed_data_by_date);
         const today_key = new Date(date).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+        console.log("today_key", today_key);
         console.log(parsed_data_by_date[today_key]);
         if (!parsed_data_by_date[today_key]) {
             this.shadowRoot.querySelector('.container').innerHTML = `

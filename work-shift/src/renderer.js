@@ -48,4 +48,11 @@ const fetch_xlsx = async () => {
     localStorage.setItem('parsed_data_by_date', JSON.stringify(parsed_data_by_date))
 }
 
-fetch_xlsx();
+fetch_xlsx().then(() => {
+    const workShiftElement = document.querySelector('work-shift');
+    if (workShiftElement && typeof workShiftElement.render === 'function') {
+        workShiftElement.render(new Date().toISOString().slice(0, 10));
+    } else {
+        console.error('WorkShift element not found or render method not available');
+    }
+});

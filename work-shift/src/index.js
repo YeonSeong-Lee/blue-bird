@@ -8,6 +8,7 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -24,10 +25,10 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  ipcMain.handle('fetch_xlsx', async () => {
+  ipcMain.handle('fetch_xlsx', async (event, filePath) => {
     const sheet_data = [];
     const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.readFile('24년 근무표.xlsx');
+    await workbook.xlsx.readFile(filePath);
     const worksheet = workbook.worksheets[workbook.worksheets.length - 1];
     sheet_data.push(worksheet.name);
     const options = { includeEmpty: true };
@@ -42,13 +43,19 @@ const createWindow = () => {
   });
 
   // Watch for changes to the Excel file
-  const watcher = chokidar.watch('24년 근무표.xlsx', {
-    persistent: true
-  });
+  let watcher;
+  ipcMain.handle('set_file_path', (event, filePath) => {
+    if (watcher) {
+      watcher.close();
+    }
+    watcher = chokidar.watch(filePath, {
+      persistent: true
+    });
 
-  watcher.on('change', () => {
-    console.log('file-changed');
-    mainWindow.webContents.send('file-changed');
+    watcher.on('change', () => {
+      console.log('file-changed');
+      mainWindow.webContents.send('file-changed');
+    });
   });
 };
 

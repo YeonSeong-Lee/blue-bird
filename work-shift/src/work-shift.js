@@ -57,11 +57,21 @@ class WorkShift extends HTMLElement {
                             ${today} 근무자를 불러오지 못했습니다. 엑셀 파일을 확인해주세요.
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <button id="change-excel">엑셀 파일 변경</button>
+                        </td>
+                    </tr>
                 </table>
                 </div>
             `;
             this.shadowRoot.querySelector('#date-input').addEventListener('change', (event) => {
                 this.syncDate(event);
+            });
+            this.shadowRoot.querySelector('#reset-shift').addEventListener('click', () => {
+                const today = new Date().toISOString().slice(0, 10); // Get today's date in YYYY-MM-DD format
+                this.shadowRoot.querySelector('#date-input').value = today; // Set the date input to today's date
+                this.render(today);
             });
             return;
         }

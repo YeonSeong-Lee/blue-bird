@@ -1,5 +1,8 @@
 const fetch_xlsx = async () => {
-    const EXCEL_FILE_PATH = localStorage.getItem('EXCEL_FILE_PATH') || '24년 근무표.xlsx';
+    let EXCEL_FILE_PATH = localStorage.getItem('EXCEL_FILE_PATH');
+    if (!EXCEL_FILE_PATH || EXCEL_FILE_PATH === '' || EXCEL_FILE_PATH === "undefined") {
+        EXCEL_FILE_PATH = '24년 근무표.xlsx';
+    }
     try {
         const raw_data = await window.electronAPI.fetch_xlsx(EXCEL_FILE_PATH)
         // TODO: validate raw_data and alert if it's invalid

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const ExcelJS = require('exceljs');
 const path = require('node:path');
 const chokidar = require('chokidar'); // Add chokidar
@@ -56,6 +56,16 @@ const createWindow = () => {
       console.log('file-changed');
       mainWindow.webContents.send('file-changed');
     });
+  });
+
+  ipcMain.handle('dialog:openFile', async () => {
+    const result = await dialog.showOpenDialog({
+        properties: ['openFile'],
+        filters: [
+            { name: 'Excel Files', extensions: ['xlsx', 'xls'] }
+        ]
+    });
+    return result.filePaths;
   });
 };
 

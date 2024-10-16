@@ -73,9 +73,16 @@ class WorkShift extends HTMLElement {
             });
             this.shadowRoot.querySelector('#reset-shift').addEventListener('click', () => {
                 const today = new Date().toISOString().slice(0, 10); // Get today's date in YYYY-MM-DD format
-                this.shadowRoot.querySelector('#date-input').value = today; // Set the date input to today's date
+                this.shadowRoot.querySelector('#date-input').value = today; // Set the date input to today's date   
                 this.render(today);
             });
+            this.shadowRoot.querySelector('#change-excel').addEventListener('click', () => {
+                window.electronAPI.open_file_dialog().then((filePath) => {
+                    localStorage.setItem('EXCEL_FILE_PATH', filePath);
+                    window.electronAPI.set_file_path(filePath);
+                    location.reload();
+                });
+            })
             return;
         }
         const day_worker = parsed_data_by_date[today_key]?.filter(worker => worker.value.includes('D'));

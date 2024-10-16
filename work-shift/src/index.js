@@ -19,7 +19,8 @@ const createWindow = () => {
       nodeIntegration: false, // Set to false for security
       contextIsolation: true // Enable context isolation
     },
-    autoHideMenuBar: true
+    autoHideMenuBar: true,
+    icon: path.join(__dirname, 'blue-bird.png')
   });
 
   // and load the index.html of the app.

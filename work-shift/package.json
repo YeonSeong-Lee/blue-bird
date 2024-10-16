@@ -13,7 +13,7 @@
   "build": {
     "appId": "com.bluebird.work-shift",
     "win": {
-      "icon": "blue-bird.ico",
+      "icon": "blue-bird.png",
       "target": "nsis"
     }
   },

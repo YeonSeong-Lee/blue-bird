@@ -32,6 +32,38 @@ class WorkShift extends HTMLElement {
         this.render(selectedDate);
     }
 
+    errorRender() {
+        const loadingScreen = this.shadowRoot.querySelector('#loading-screen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+        }
+        this.shadowRoot.querySelector('.container').innerHTML = `
+            <div class="work-shift">
+                <table>
+                <tr>
+                    <th colspan="2" id="header">에러 페이지</th>
+                </tr>
+                <tr>
+                    <td>
+                        엑셀 파일을 확인해주세요.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button id="change-excel">엑셀 파일 변경</button>
+                    </td>
+                </tr>
+            </div>
+        `;
+        this.shadowRoot.querySelector('#change-excel').addEventListener('click', () => {
+            window.electronAPI.open_file_dialog().then((filePath) => {
+                localStorage.setItem('EXCEL_FILE_PATH', filePath);
+                window.electronAPI.set_file_path(filePath);
+                location.reload();
+            });
+        })
+    }
+
     render(date) {
         const today = new Date(date).toLocaleDateString('kr', { month: '2-digit', day: "2-digit" });
         const parsed_data_by_date = JSON.parse(localStorage.getItem('parsed_data_by_date'));
@@ -40,7 +72,7 @@ class WorkShift extends HTMLElement {
         if (loadingScreen) {
             loadingScreen.style.display = 'none';
         }
-        if (!parsed_data_by_date[today_key]) {
+        if (!parsed_data_by_date || !parsed_data_by_date[today_key]) {
             this.shadowRoot.querySelector('.container').innerHTML = `
                 <div class="work-shift">
                 <table>

@@ -5,6 +5,9 @@ const fetch_xlsx = async () => {
     }
     try {
         const raw_data = await window.electronAPI.fetch_xlsx(EXCEL_FILE_PATH)
+        if (!raw_data) {
+            throw new Error('Error fetching Excel data:', error);
+        }
         // TODO: validate raw_data and alert if it's invalid
         const year = '20' + raw_data[0].split('-')[0]
         const date = []
@@ -53,7 +56,7 @@ const fetch_xlsx = async () => {
         localStorage.setItem('parsed_data_by_date', JSON.stringify(parsed_data_by_date))
     } catch (error) {
         console.error('Error fetching Excel data:', error);
-        // 여기에 오류 처리 로직을 추가할 수 있습니다.
+        throw error;
     }
 }
 
@@ -65,7 +68,12 @@ const fetchAndRenderData = () => {
         }
     }).catch(error => {
         console.error('Error in fetchAndRenderData:', error);
-        // 여기에 오류 처리 로직을 추가할 수 있습니다.
+        const workShiftElement = document.querySelector('work-shift');
+        console.log('workShiftElement', workShiftElement)
+        if (workShiftElement) {
+            workShiftElement.errorRender();
+        }
+        return null
     });
 };
 

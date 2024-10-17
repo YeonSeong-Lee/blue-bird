@@ -29,7 +29,12 @@ const createWindow = () => {
   ipcMain.handle('fetch_xlsx', async (event, filePath) => {
     const sheet_data = [];
     const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.readFile(filePath);
+    try {
+      await workbook.xlsx.readFile(filePath);
+    } catch (error) {
+      console.error('Error reading Excel file:', error);
+      return null;
+    }
     const worksheet = workbook.worksheets[workbook.worksheets.length - 1];
     sheet_data.push(worksheet.name);
     const options = { includeEmpty: true };

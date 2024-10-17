@@ -1,8 +1,8 @@
 {
-  "name": "work-shift",
-  "productName": "work-shift",
+  "name": "bluebird-work-shift",
+  "productName": "파랑새둥지 근무표",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "파랑새둥지 근무표 Viewer",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",

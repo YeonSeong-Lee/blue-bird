@@ -6,7 +6,7 @@ const fetch_xlsx = async () => {
     try {
         const raw_data = await window.electronAPI.fetch_xlsx(EXCEL_FILE_PATH)
         if (!raw_data) {
-            throw new Error('Error fetching Excel data:', error);
+            throw new Error('Error fetching Excel data:');
         }
         // TODO: validate raw_data and alert if it's invalid
         const year = '20' + raw_data[0].split('-')[0]
@@ -69,8 +69,8 @@ const fetchAndRenderData = () => {
     }).catch(error => {
         console.error('Error in fetchAndRenderData:', error);
         const workShiftElement = document.querySelector('work-shift');
-        console.log('workShiftElement', workShiftElement)
-        if (workShiftElement) {
+        console.log('workShiftElement', workShiftElement.errorRender)
+        if (workShiftElement && typeof workShiftElement.errorRender === 'function') {
             workShiftElement.errorRender();
         }
         return null
@@ -84,8 +84,10 @@ window.electronAPI.set_file_path(initialPath);
 localStorage.setItem("EXCEL_FILE_PATH", initialPath);
 
 
-// Initial fetch and render
-fetchAndRenderData();
+// Initial fetch and render should be done after the page is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    fetchAndRenderData();
+});
 
 // Listen for file changes
 window.electronAPI.on('file-changed', () => {

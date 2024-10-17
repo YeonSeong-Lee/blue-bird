@@ -22,9 +22,6 @@ class WorkShift extends HTMLElement {
         loadingScreen.style.height = '100%';
         loadingScreen.style.fontSize = '24px';
         container.appendChild(loadingScreen);
-
-        const EXCEL_FILE_PATH = localStorage.getItem('EXCEL_FILE_PATH') || '24년 근무표.xlsx';
-        console.log('EXCEL_FILE_PATH', EXCEL_FILE_PATH);
     }
 
     syncDate(event) {

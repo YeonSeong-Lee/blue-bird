@@ -8,6 +8,7 @@ const fetch_xlsx = async () => {
         if (!raw_data) {
             throw new Error('Error fetching Excel data:');
         }
+        // TODO: 탭이름이 YY-MM 형식이 아닐 경우 에러 반환
         // TODO: validate raw_data and alert if it's invalid
         const year = '20' + raw_data[0].split('-')[0]
         const date = []
